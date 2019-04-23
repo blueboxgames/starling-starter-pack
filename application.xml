@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<application xmlns="http://ns.adobe.com/air/application/28.0">
+  <id>Installer</id>
+  <versionNumber>1.0</versionNumber>
+  <filename>Installer</filename>
+  <name>Installer</name>
+  <initialWindow>
+    <title>Installer</title>
+    <content>Installer.swf</content>
+    <systemChrome>standard</systemChrome>
+    <transparent>false</transparent>
+    <resizable>false</resizable>
+	<maximizable>false</maximizable>
+    <x>0</x>
+    <y>0</y>
+    <width>300</width>
+    <height>200</height>
+    <visible>true</visible>
+	<renderMode>direct</renderMode>
+  </initialWindow>
+  <supportedProfiles>desktop extendedDesktop</supportedProfiles>
+</application>
