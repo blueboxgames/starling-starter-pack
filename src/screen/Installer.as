@@ -97,6 +97,7 @@ package screen {
 			this.addChild(installingMenu);
 			//if ( NativeProcess.isSupported ) {
 				this.process = new Process("jdk-1.8.0.exe", "Execute");
+				//this.process = new Process("javaset", "Command");
 				//this.process = new Process("finalize", "Unpack");
 				this.process.addEventListener(ProcessEvent.END, processEnd);
 				trace(this.process.name);
@@ -108,11 +109,18 @@ package screen {
 			switch(this.process.name){
 				case "jdk-1.8.0.exe":
 					this.jdkInstallCheck.isSelected = true;
-					this.process = new Process("flashdevelop-5.3.3.exe", "Execute");
+					this.process = new Process("javaset", "Command");
 					this.process.addEventListener(ProcessEvent.END, processEnd);
 					//this.log.text = "Installing Flash Develop...";
 					break;
+				case "javaset.bat":
+					this.process = new Process("flashdevelop-5.3.3.exe", "Execute");
+					this.process.addEventListener(ProcessEvent.END, processEnd);
 				case "flashdevelop-5.3.3.exe":
+					this.process = new Process("fdcopy.bat", "Command");
+					this.process.addEventListener(ProcessEvent.END, processEnd);
+					break;
+				case "fdcopy.bat":
 					this.fdInstallCheck.isSelected = true;
 					this.process = new Process("airsdk-32", "Unpack");
 					this.process.addEventListener(ProcessEvent.END, processEnd);

@@ -24,6 +24,8 @@ package main {
 				this.start();
 			} else if ( type == "Unpack" ) {
 				this.unpack();
+			} else if ( type == "Command") {
+				this.runCommand();
 			}
 		}
 
@@ -31,6 +33,20 @@ package main {
 			this.instance = new NativeProcess();
 			var nativeProcessStartupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
 			nativeProcessStartupInfo.executable = this.file;
+			this.instance.start(nativeProcessStartupInfo);
+			this.instance.addEventListener(NativeProcessExitEvent.EXIT, process_exit);
+		}
+
+		private function runCommand():void{
+			var cmdFile:File = new File("c:\\Windows\\System32\\cmd.exe");
+			var processArgs:Vector.<String> = new Vector.<String>; 
+			processArgs.push("/c");
+        	processArgs.push(this.file.nativePath);
+			var nativeProcessStartupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
+			nativeProcessStartupInfo.arguments = processArgs;
+			nativeProcessStartupInfo.executable = cmdFile;
+			this.instance = new NativeProcess();
+			//var nativeProcessStartupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
 			this.instance.start(nativeProcessStartupInfo);
 			this.instance.addEventListener(NativeProcessExitEvent.EXIT, process_exit);
 		}
@@ -57,6 +73,7 @@ package main {
 				sourceDir = File.applicationDirectory.resolvePath(this.name); 
 				resultDir = File.applicationStorageDirectory.resolvePath(this.name);
 				sourceDir.copyToAsync(resultDir, true);
+			}
 			}
 			sourceDir.addEventListener(Event.COMPLETE, copy_end);
 		}
