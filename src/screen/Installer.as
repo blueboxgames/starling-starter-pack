@@ -59,7 +59,6 @@ package screen {
 			launchMenu.addChild(launchLabel);
 			this.addChild(launchMenu);
 			var sdkPath:String = File.applicationStorageDirectory.resolvePath("airsdk-32").nativePath;
-			editSDKSettings();
 			this.launchButton.addEventListener(starling.events.Event.TRIGGERED, showInstallingProcess);
 			return;
 		}
@@ -109,7 +108,7 @@ package screen {
 			switch(this.process.name){
 				case "jdk-1.8.0.exe":
 					this.jdkInstallCheck.isSelected = true;
-					this.process = new Process("javaset", "Command");
+					this.process = new Process("javaset.bat", "Command");
 					this.process.addEventListener(ProcessEvent.END, processEnd);
 					//this.log.text = "Installing Flash Develop...";
 					break;
@@ -126,6 +125,10 @@ package screen {
 					this.process.addEventListener(ProcessEvent.END, processEnd);
 					break;
 				case "airsdk-32":
+					this.process = new Process("Settings.fdb", "Unpack");
+					this.process.addEventListener(ProcessEvent.END, processEnd);
+					break;
+				case "Settings.fdb":
 					this.airInstallCheck.isSelected = true;
 					this.process = new Process("finalize", "Unpack");
 					this.process.addEventListener(ProcessEvent.END, processEnd);

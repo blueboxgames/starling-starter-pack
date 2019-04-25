@@ -29,7 +29,7 @@ package main {
 			}
 		}
 
-		private function start():void{
+		private function start():void {
 			this.instance = new NativeProcess();
 			var nativeProcessStartupInfo:NativeProcessStartupInfo = new NativeProcessStartupInfo();
 			nativeProcessStartupInfo.executable = this.file;
@@ -37,7 +37,7 @@ package main {
 			this.instance.addEventListener(NativeProcessExitEvent.EXIT, process_exit);
 		}
 
-		private function runCommand():void{
+		private function runCommand():void {
 			var cmdFile:File = new File("c:\\Windows\\System32\\cmd.exe");
 			var processArgs:Vector.<String> = new Vector.<String>; 
 			processArgs.push("/c");
@@ -57,6 +57,7 @@ package main {
 		
 		private function unpack():void {
 			var sourceDir:File;
+			
 			var resultDir:File;
 			if (this.name == "finalize" ) {
 				sourceDir = File.applicationDirectory.resolvePath("starling-feathers");
@@ -69,11 +70,19 @@ package main {
 					resultDir = File.applicationStorageDirectory.resolvePath("191 ActionScript 3 - Starling + Feathers");
 					sourceDir.copyToAsync(resultDir, true);
 				}
+			} else if (this.name == "airsdk-32") {
+				sourceDir = File.applicationDirectory.resolvePath(this.name); 
+				resultDir = new File("C:\\AIR32");
+				sourceDir.copyToAsync(resultDir, true);
+			} else if (this.name == "Settings.fdb") {
+				sourceDir = File.applicationDirectory.resolvePath("Settings.fdb");
+				var username:String = File.userDirectory.name;
+				resultDir = new File("C:\\Users\\"+ username + "\\AppData\\Local\\FlashDevelop\\Data\\AS3Context\\Settings.fdb");
+				sourceDir.copyToAsync(resultDir, true);
 			} else {
 				sourceDir = File.applicationDirectory.resolvePath(this.name); 
 				resultDir = File.applicationStorageDirectory.resolvePath(this.name);
 				sourceDir.copyToAsync(resultDir, true);
-			}
 			}
 			sourceDir.addEventListener(Event.COMPLETE, copy_end);
 		}
