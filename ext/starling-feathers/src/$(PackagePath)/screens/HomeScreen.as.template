@@ -1,0 +1,41 @@
+package $(PackageDot)screens 
+{
+import $(PackageDot)Game;
+import feathers.controls.Button;
+import feathers.controls.Screen;
+import feathers.layout.AnchorLayout;
+import feathers.layout.AnchorLayoutData;
+import starling.events.Event;
+
+/**
+$(CBI)* @company BlueBoxGames
+$(CBI)* @author $(DefaultUser)
+$(CBI)*/
+
+public class HomeScreen extends Screen 
+{
+
+public function HomeScreen() 
+{
+	super();
+}
+
+override protected function initialize() : void 
+{
+	super.initialize();
+	
+	layout = new AnchorLayout();
+	
+	var button:Button = new Button();
+	button.label = "Go to First";
+	button.layoutData = new AnchorLayoutData(NaN, NaN, NaN, NaN, 0, 0);
+	button.addEventListener(Event.TRIGGERED, this.button_triggeredHandler);
+	addChild(button);
+}
+
+protected function button_triggeredHandler(e:Event) : void 
+{
+	dispatchEventWith(Game.FIRST_SCREEN);
+}
+}
+}

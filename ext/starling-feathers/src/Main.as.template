@@ -1,0 +1,96 @@
+package $(CSLB){
+	import $(PackageDot)Game;
+	import flash.desktop.NativeApplication;
+	import flash.display.Sprite;
+	import flash.display.StageAlign;
+	import flash.display.StageScaleMode;
+	import flash.display3D.Context3DProfile;
+	import flash.display3D.Context3DRenderMode;
+	import flash.events.ErrorEvent;
+	import flash.events.Event;
+	import flash.events.InvokeEvent;
+	import flash.events.UncaughtErrorEvent;
+	import flash.geom.Rectangle;
+	import starling.core.Starling;
+
+	/**
+	$(CBI)* @company BlueBoxGames
+	$(CBI)* @author $(DefaultUser)
+	$(CBI)*/
+
+	public class Main extends Sprite $(CSLB){
+		private var starling:Starling;
+
+		public function Main() $(CSLB){
+			this.mouseEnabled = this.mouseChildren = false;
+			this.stage.scaleMode = StageScaleMode.NO_SCALE;
+			this.stage.align = StageAlign.TOP_LEFT;
+
+			this.loaderInfo.addEventListener(Event.COMPLETE, 										this.loaderInfo_completeHandler);
+			this.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR,	this.loaderInfo_uncaughtErrorHandler);
+			NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE,				this.nativeApplication_invokeHandler);
+		}
+
+		protected function loaderInfo_completeHandler(event:Event):void $(CSLB){
+			this.loaderInfo.removeEventListener(Event.COMPLETE, this.loaderInfo_completeHandler);
+			this.starStarling();
+		}
+
+		private function starStarling():void $(CSLB){
+			this.starling = new Starling(Game, stage, new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight), null, Context3DRenderMode.AUTO, Context3DProfile.BASELINE);
+			this.starling.addEventListener("rootCreated", this.starling_rootCreatedHandler);
+			this.starling.supportHighResolutions = true;
+			this.starling.skipUnchangedFrames = true;
+			this.starling.start();
+		//	this.starling.stage.stageWidth  = 1080;
+		//	this.starling.stage.stageHeight = this.stage.fullScreenHeight * (this.starling.stage.stageWidth / this.stage.fullScreenWidth);
+			this.starling.showStatsAt("right", "top", 1 / this.starling.contentScaleFactor);
+			//trace(stage.fullScreenWidth, stage.fullScreenHeight, this.starling.stage.stageWidth, this.starling.stage.stageHeight, this.starling.contentScaleFactor);
+		}
+
+		protected function starling_rootCreatedHandler(event:Object):void $(CSLB){
+			this.starling.removeEventListener("rootCreated",	this.starling_rootCreatedHandler);
+			this.stage.addEventListener(Event.DEACTIVATE, 		this.stage_deactivateHandler, false, 0, true);
+		}
+
+		protected function stage_deactivateHandler(event:Event):void $(CSLB){
+			if( true ) $(CSLB){ // out of live battles
+				this.starling.stop(true);
+				this.stage.frameRate = 0;
+			}
+			this.stage.addEventListener(Event.ACTIVATE, this.stage_activateHandler, false, 0, true);
+			// sounds.muteAll(true);
+			// notifications.reset();
+		}
+		protected function stage_activateHandler(event:Event):void $(CSLB){
+			this.stage.removeEventListener(Event.ACTIVATE, this.stage_activateHandler);
+			this.stage.frameRate = 60;
+			this.starling.start();
+			// sounds.muteAll(false);
+			// notifications.clear();
+		}
+
+		protected function nativeApplication_invokeHandler(event:InvokeEvent):void $(CSLB){
+			// do somethings by schema
+		}
+
+		protected function loaderInfo_uncaughtErrorHandler(event:UncaughtErrorEvent):void $(CSLB){
+			var text:String;
+			var severity:int;
+
+			if( event.error is Error ) $(CSLB){
+				text =  event.error.getStackTrace();
+				//severity = GAErrorSeverity.CRITICAL;
+			}
+			else if( event.error is ErrorEvent ) $(CSLB){
+				text = event.error.text;
+				//severity = GAErrorSeverity.ERROR;
+			}
+			else $(CSLB){
+				text = event.error.toString();
+				//severity = GAErrorSeverity.WARNING;
+			}
+			//GameAnalytics.addErrorEvent(severity, text);
+		}
+	}
+}

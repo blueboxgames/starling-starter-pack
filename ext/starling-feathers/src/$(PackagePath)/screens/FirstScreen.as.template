@@ -1,0 +1,40 @@
+package $(PackageDot)screens
+{
+import feathers.controls.Button;
+import feathers.controls.Screen;
+import feathers.layout.AnchorLayout;
+import feathers.layout.AnchorLayoutData;
+import starling.events.Event;
+
+/**
+$(CBI)* @company BlueBoxGames
+$(CBI)* @author $(DefaultUser)
+$(CBI)*/
+
+public class FirstScreen extends Screen 
+{
+
+public function FirstScreen() 
+{
+	super();
+}
+
+override protected function initialize() : void 
+{
+	super.initialize();
+	
+	layout = new AnchorLayout();
+	
+	var button:Button = new Button();
+	button.label = "<- Return";
+	button.layoutData = new AnchorLayoutData(200, NaN, NaN, NaN, 0);
+	button.addEventListener(Event.TRIGGERED, this.button_triggeredHandler);
+	addChild(button);
+}
+
+protected function button_triggeredHandler(e:Event) : void 
+{
+	dispatchEventWith(Event.COMPLETE);
+}
+}
+}
